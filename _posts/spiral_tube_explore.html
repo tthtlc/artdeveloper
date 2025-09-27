@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Spiral Tube with Adjustable Radius</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="controls">
+    <label for="radius">Tube Radius: </label>
+    <input type="range" id="radius" min="0.1" max="8" step="0.1" value="0.5">
+  </div>
+
+  <script>
+    // Set up scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Define parameters for the spiral tube
+    const spiralLength = 100;
+    const initialRadius = 5;
+    const turns = 6;
+    const radiusDecreaseRate = initialRadius / spiralLength;
+
+    // Create geometry for the spiral tube
+    const points = [];
+    for (let i = 0; i < spiralLength; i++) {
+      const angle = i * (turns * Math.PI * 2 / spiralLength);
+      const radius = initialRadius - (i * radiusDecreaseRate);
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+      const z = i * 0.2; // adjust to elongate the spiral along z-axis
+      points.push(new THREE.Vector3(x, y, z));
+    }
+
+    // Create a tube along the defined spiral path
+    const path = new THREE.CatmullRomCurve3(points);
+    let tubeRadius = 0.5;
+    let geometry = new THREE.TubeGeometry(path, spiralLength * 4, tubeRadius, 8, false);
+    const material = new THREE.MeshBasicMaterial({ color: 0x0077ff, wireframe: true });
+    let tube = new THREE.Mesh(geometry, material);
+    scene.add(tube);
+
+    // Position camera and set the scene
+    camera.position.z = 40;
+
+    // Animation function
+    function animate() {
+      requestAnimationFrame(animate);
+      tube.rotation.x += 0.01;
+      tube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    // Adjust tube radius based on scrollbar value
+    document.getElementById('radius').addEventListener('input', (event) => {
+      tubeRadius = parseFloat(event.target.value);
+      scene.remove(tube); // Remove the old tube
+
+      // Create a new tube geometry with the updated radius
+      geometry = new THREE.TubeGeometry(path, spiralLength * 4, tubeRadius, 8, false);
+      tube = new THREE.Mesh(geometry, material);
+      scene.add(tube); // Add the new tube
+    });
+  </script>
+</body>
+</html>
+

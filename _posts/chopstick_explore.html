@@ -1,0 +1,80 @@
+    <canvas id="animationCanvas" width="600" height="600"></canvas>
+    <div class="controls">
+        <label for="sides">Number of sides:</label>
+        <input type="range" id="sides" name="sides" min="3" max="15" step="1" value="5">
+        <span id="sidesValue">5</span>
+        <button id="startStopButton">Start</button>
+    </div>
+    <script>
+        const canvas = document.getElementById('animationCanvas');
+        const ctx = canvas.getContext('2d');
+        const largeRadius = 200;
+        const smallRadius = 150;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        let rotationAngleLarge = 0;
+        let rotationAngleSmall = 0;
+        let numSides = 5;
+        let isAnimating = false;
+        let animationFrameId;
+
+        const sidesSlider = document.getElementById('sides');
+        const sidesValueDisplay = document.getElementById('sidesValue');
+        const startStopButton = document.getElementById('startStopButton');
+
+        sidesSlider.addEventListener('input', (event) => {
+            numSides = parseInt(event.target.value);
+            sidesValueDisplay.textContent = numSides;
+        });
+
+        function getPolygonPoints(centerX, centerY, radius, rotationAngle, numSides) {
+            const points = [];
+            const rotationRadians = rotationAngle * Math.PI / 180;
+            const angleStep = (2 * Math.PI) / numSides;
+
+            for (let i = 0; i < numSides; i++) {
+                const angle = i * angleStep;
+                const x = centerX + radius * Math.cos(angle);
+                const y = centerY + radius * Math.sin(angle);
+                const rotatedX = centerX + (x - centerX) * Math.cos(rotationRadians) - (y - centerY) * Math.sin(rotationRadians);
+                const rotatedY = centerY + (x - centerX) * Math.sin(rotationRadians) + (y - centerY) * Math.cos(rotationRadians);
+                points.push({ x: rotatedX, y: rotatedY });
+            }
+            return points;
+        }
+
+        function drawLines(points1, points2) {
+            for (let i = 0; i < points1.length; i++) {
+                ctx.strokeStyle = i % 2 === 1 ? 'blue' : 'red';
+                ctx.beginPath();
+                ctx.moveTo(points1[i].x, points1[i].y);
+                ctx.lineTo(points2[i].x, points2[i].y);
+                ctx.stroke();
+            }
+        }
+
+        function animate() {
+            if (!isAnimating) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const largePolygonPoints = getPolygonPoints(centerX, centerY, largeRadius, rotationAngleLarge, numSides);
+            const smallPolygonPoints = getPolygonPoints(centerX, centerY, smallRadius, rotationAngleSmall, numSides);
+
+            drawLines(largePolygonPoints, smallPolygonPoints);
+
+            rotationAngleLarge = (rotationAngleLarge + 2) % 360;
+            rotationAngleSmall = (rotationAngleSmall - 2) % 360;
+
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        startStopButton.addEventListener('click', () => {
+            isAnimating = !isAnimating;
+            if (isAnimating) {
+                startStopButton.textContent = "Stop";
+                animate();
+            } else {
+                startStopButton.textContent = "Start";
+                cancelAnimationFrame(animationFrameId);
+            }
+        });
+    </script>

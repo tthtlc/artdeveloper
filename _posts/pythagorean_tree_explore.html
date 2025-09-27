@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Pythagorean Tree Generator</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      border: 1px solid #000;
+    }
+  </style>
+  <script type="text/javascript">
+
+    function validateXXXX() {
+      // Validate the control form and draw a tree.
+      const canvas = document.getElementById("canv");
+      const context = canvas.getContext('2d');
+
+      // Placeholder tree drawing logic
+      context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      context.fillStyle = "#000";
+      context.fillRect(50, 50, 300, 300); // Example square
+      return false; // Prevent form submission for demo purposes
+    }
+
+    <!-- //https://www.cs.mcgill.ca/~avieth/fractal/1 -->
+    let ANGLE = 1.04719; // Initial value for ANGLE
+    let WIDTH = 100;    // Initial value for WIDTH
+    var CANVAS_PAD_X = 50;
+    var CANVAS_PAD_Y = 50;
+
+function validate() {
+  //Validate the control form and draw a tree.
+  var f = document.forms['form'];
+  var THRESHOLD = 0.5;
+  //var ANGLE  = 1.04719;
+  var _ANGLE = Math.PI/2 - ANGLE;                    //The other angle in a right triangle.
+  var COLOUR = '#000000';
+  var dRED = 0;
+  var dGRN = 5;
+  var dBLU = 0;
+  //var WIDTH = 100;
+  var OFFSETANGLE = 3.141592654;
+  var CONIFEROUS = 0;
+  //var CONIFEROUS = 1;
+  //var CONIFEROUS = 2;
+  var INVROOT = 0;   //f['invr'].checked;
+  
+  var canvas = document.getElementById("canv");
+  var context = canvas.getContext('2d');
+  
+  //Produce a big list of squares to draw.
+  var tree = makeTree(CONIFEROUS,INVROOT,COLOUR,WIDTH,OFFSETANGLE,0,0,ANGLE,_ANGLE,THRESHOLD,dRED,dGRN,dBLU);
+  
+  //The first 4 elements of tree are extremal coordinates.
+  //The fifth element is a list of squares to draw.
+  var maxx = tree[0];
+  var maxy = tree[1];
+  var minx = tree[2];
+  var miny = tree[3];
+  
+  //Set the canvas to proper dimensions; this also clears the canvas.
+  canvas.width = maxx-minx+CANVAS_PAD_X; 
+  canvas.height = maxy-miny+CANVAS_PAD_Y;
+
+  //Draw the tree and pad the canvas with 50 pixels.
+  drawTree(context,tree[4],-minx+CANVAS_PAD_X,-miny+CANVAS_PAD_Y);
+  return true;
+}
+
+/* Just a small queue implementation for use in makeTree. */
+
+function Queue ()
+{
+  var q = []; //A list to represent the queue.
+  var i = 0;  //A number to point to the index of the front of the queue.
+  
+  this.enqueue = function (x)
+  {
+    q.push(x);
+  }
+
+  this.dequeue = function ()
+  {
+    //Take the first element of q (element at index i)
+    var r = q[i];
+    i++;
+    if (i*2 >= q.length)
+    {
+      //If i is greater than half the list length, drop the first half of the list.
+      q = q.slice(i);
+      i = 0;
+    }
+    return r;
+  }
+  
+  this.empty = function ()
+  {
+    return (q.length == 0);
+  }
+}
+
+/* Integer to hex string conversion functions for dealing with hex coded colours. */
+
+var intToHex = function (n) 
+{
+  var table = {0 : '0', 1 : '1', 2 : '2', 3 : '3', 4 : '4', 5 : '5', 6 : '6', 7 : '7', 8 : '8', 9 : '9', 10 : 'A', 11 : 'B', 12 : 'C', 13 : 'D', 14 : 'E', 15 : 'F'};
+  var hex = '';
+  for (var i = 0; i < 5; i++)
+  {
+    hex = (table[n % 16]) + hex;
+    n = Math.floor(n/16);
+  }
+  hex = (table[n % 16]) + hex;
+  return '#' + hex;
+}
+
+var hexToInt = function (n)
+{
+  var table = {'0' : 0, '1' : 1, '2' : 2, '3' : 3, '4' : 4, '5' : 5, '6' : 6, '7' : 7, '8' : 8, '9' : 9, 'A' : 10, 'B' : 11, 'C' : 12, 'D' : 13, 'E' : 14, 'F' : 15};
+  var l = n.length;
+  var r = 0;
+  //Start with 1 because the first character is the hash symbol.
+  for (var i = 1; i < l; i++)
+  {
+    r = r + (table[n[i]]*Math.pow(16,l-1-i))
+  }
+  return r
+}
+
+var distance = function (x1,y1,x2,y2)
+{
+  //Compute the distance in the plane between (x1,y1) and (x2,y2).
+  var dx = x2-x1;
+  var dy = y2-y1;
+  return Math.sqrt(dx*dx + dy*dy);
+}
+
+/* The Square object. Each one holds coordinate and style information for use by drawTree. */
+
+function Square (crds,l,t,c,style)
+{
+  //Square includes all the data we need to describe a square and to
+  //produce its 2 children.
+
+  //This will always be an 8 element list of pattern [x0,y0,x1,y1,... ]
+  this.crds = crds;
+  this.t = t;
+  this.l = l;
+  this.conifer = c;
+  this.style = style;
+}
+
+var drawSquare = function (context,sq,x,y)
+{
+  //Draw the square sq, translted by (x, y).
+  var x0 = x+sq.crds[0];
+  var y0 = y+sq.crds[1];
+  var x1 = x+sq.crds[2];
+  var y1 = y+sq.crds[3];
+  var x2 = x+sq.crds[4];
+  var y2 = y+sq.crds[5];
+  var x3 = x+sq.crds[6];
+  var y3 = y+sq.crds[7];
+  context.beginPath();
+  context.moveTo(x0,y0);
+  context.lineTo(x1,y1);
+  context.lineTo(x2,y2);
+  context.lineTo(x3,y3);
+  context.lineTo(x0,y0);
+  //Fill the path with the square's colour style.
+  context.fillStyle = sq.style;
+  context.fill();
+}
+
+var drawTree = function (context,tree,x,y)
+{
+  //Draw tree with each square translated by x, y.
+  for (var i = 0; i < tree.length; i++)
+    drawSquare(context,tree[i],x,y);
+}
+
+var makeSquare = function (l,t,x0,y0,conifer,style)
+{
+  //Make a square at (x,y) with side length l and angle (relative to x-axis) t.
+  //Return a Square object with the negated conifer parameter.
+  var x1 = l*Math.cos(t);
+  var y1 = l*Math.sin(t);
+  var x3 = l*Math.cos(t+(Math.PI/2.0));
+  var y3 = l*Math.sin(t+(Math.PI/2.0));
+  var x2 = x1+x3;
+  var y2 = y1+y3;
+  //Translate the coordinates.
+  x1 = x0+x1;
+  y1 = y0+y1;
+  x2 = x0+x2;
+  y2 = y0+y2;
+  x3 = x0+x3;
+  y3 = y0+y3;
+  //We negate conifer for convenience in makeTree.
+  return new Square([x0,y0,x1,y1,x2,y2,x3,y3],l,t,!conifer,style)
+}
+
+var makeTree = function (coniferous,invroot,style,l,t,x,y,a1,a2,th,dred,dgrn,dblu)
+{
+  var tree = []; //Will be a massive list of Square objects.
+  //Variables for statistics about canvas dimensions.
+  var maxx = 0;
+  var maxy = 0;
+  var minx = Math.pow(2,32); //Initialize to a very big number.
+  var miny = Math.pow(2,32);
+  
+  //Produce the first square.
+  var sq = makeSquare(l,t,x,y,invroot,style);
+  //We will produce 2 more squares from it: A and B.
+  var tA = t;  //t for theta (angle).
+  var tB = t;
+  var lA = l;  //l for length of a side.
+  var lB = l;
+
+  var xA;
+  var yA;
+  var xB;
+  var yB;
+  var A;
+  var B;
+  
+  //This queue qill hold squares.
+  var q = new Queue();
+  //Enqueue the base to begin.
+  q.enqueue(sq);
+  
+  //Keep track of the iteration so we can determine whether to change style.
+  var styleCounter = 0; 
+  
+  while (!q.empty()) 
+  {
+    //Dequeue into sq and add that square to the tree.
+    sq = q.dequeue();
+    tree.push(sq);
+    
+    //Sort out a new style if the styleCounter is a power of 2.
+    //We do it this way so that the tree is coloured consistenly per level.
+    if ((styleCounter & (styleCounter-1)) == 0)
+    {
+      //Not so sure if this is the best way to colour the tree.
+      var style_ = hexToInt(style);
+      var cRed = Math.floor((style_ / 65536) % 256);//The red byte
+      var cGrn = Math.floor((style_ / 256) % 256);  //The green byte
+      var cBlu = Math.floor(style_ % 256);          //The blue byte
+      var red = Math.max(Math.min((cRed+dred),255),0);
+      var grn = Math.max(Math.min((cGrn+dgrn),255),0);
+      var blu = Math.max(Math.min((cBlu+dblu),255),0);
+      var style = intToHex((red*65536)+(grn*256)+blu);
+    }
+    styleCounter++;
+    
+    //For a coniferous or a semi-coniferous tree we must swap the angles.
+    //Whether we swap them back afterwards is another question.
+    if (!(coniferous == 0) && sq.conifer)
+    { 
+      var a3 = a1;
+      a1 = a2;
+      a2 = a3;
+    }
+    
+    //Produce coordinates for two new (smaller) squares.
+    tA = sq.t+a1;           //The angle for A.
+    lA = sq.l*Math.cos(a1); //The side length for A.
+    xA = sq.crds[6];
+    yA = sq.crds[7];
+    A = makeSquare(lA,tA,xA,yA,sq.conifer,style);
+    
+    tB = sq.t-a2;
+    lB = sq.l*Math.cos(a2);
+    xB = A.crds[2]; 
+    yB = A.crds[3];
+    B = makeSquare(lB,tB,xB,yB,sq.conifer,style);
+   
+    //Only swap the angle back for coniferous trees. 
+    //Skipping this step leads to some cool fractals.
+    //This is the semi-coniferous option.
+    if ((coniferous == 2) && sq.conifer)
+    { 
+      var a3 = a1;
+      a1 = a2;
+      a2 = a3;
+    }
+    
+    //Enqueue those coordinates (if within threshold) and continue.
+    if (lA > th)
+      q.enqueue(A);
+    if (lB > th)
+      q.enqueue(B);
+    
+    //Collect some numbers so that we can adjust the canvas before drawing.
+    minx = Math.min(minx,A.crds[0],A.crds[2],A.crds[4],A.crds[6],B.crds[0],B.crds[2],B.crds[4],B.crds[6]);
+    miny = Math.min(miny,A.crds[1],A.crds[3],A.crds[5],A.crds[7],B.crds[1],B.crds[3],B.crds[5],B.crds[7]);
+    maxx = Math.max(maxx,A.crds[0],A.crds[2],A.crds[4],A.crds[6],B.crds[0],B.crds[2],B.crds[4],B.crds[6]);
+    maxy = Math.max(maxy,A.crds[1],A.crds[3],A.crds[5],A.crds[7],B.crds[1],B.crds[3],B.crds[5],B.crds[7]);
+  }
+  return [maxx,maxy,minx,miny,tree];
+};
+
+    function updateAngle(value) {
+      ANGLE = parseFloat(value);
+      document.getElementById("angleValue").textContent = value;
+      validate();
+    }
+
+    function updateWidth(value) {
+      WIDTH = parseFloat(value);
+      document.getElementById("widthValue").textContent = value;
+      validate();
+    }
+  </script>
+</head>
+<body onload="validate()">
+  <div class="container">
+<div>
+    <label for="angle">Angle (Radians):</label>
+    <input type="range" id="angle" min="0.1" max="1.5" step="0.01" value="1.04719" oninput="updateAngle(this.value)">
+    <span id="angleValue">1.04719</span>
+
+    <br><br>
+
+    <label for="width">Width:</label>
+    <input type="range" id="width" min="10" max="100" step="1" value="100" oninput="updateWidth(this.value)">
+    <span id="widthValue">100</span>
+</div>
+<div>
+    <!-- The canvas goes on the right of the controls, and the controls do not obstruct the canvas. -->
+    <canvas id="canv">Your browser does not support the canvas object.</canvas>
+</div>
+
+</body>
+</html>

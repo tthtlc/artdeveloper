@@ -1,0 +1,52 @@
+Dynamic Complex Line Drawing
+<div class="canvas-container">
+<canvas id="complexLineCanvas" width="600" height="600"></canvas>
+<div id="gitalk-container"></div>
+</div>
+    
+<script>
+        const canvas = document.getElementById('complexLineCanvas');
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const centerX1 = canvas.width / 4;
+        const centerY1 = canvas.height / 4;
+        const numLines = 60;
+
+        let angleMultiplier1 = 1;
+        let angleMultiplier2 = 1;
+        let radius1 = 100;
+        let radius2 = 100;
+        let angleOffset = 0;
+
+        function drawComplexPattern() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 0.5;
+
+            for (let i = 0; i < numLines; i++) {
+                const angle1 = (i / numLines) * 2 * Math.PI;
+                const angle2 = ((i + 180) / numLines) * 2 * Math.PI;
+
+                const x1 = centerX + radius1 * Math.cos(angle1);
+                const y1 = centerY + radius1 * Math.sin(angle1);
+                const x2 = centerX1 + radius2 * Math.cos(angle2 + angleOffset);
+                const y2 = centerY1 + radius2 * Math.sin(angle2 + angleOffset);
+
+                ctx.beginPath();
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.stroke();
+            }
+
+            angleOffset += 0.01;
+            angleMultiplier1 = 2 + Math.sin(angleOffset) * 2;
+            angleMultiplier2 = 4 + Math.cos(angleOffset) * 2;
+            radius1 = 100 + Math.sin(angleOffset) * 50;
+            radius2 = 400 + Math.cos(angleOffset) * 50;
+
+            requestAnimationFrame(drawComplexPattern);
+        }
+
+        drawComplexPattern();
+</script>

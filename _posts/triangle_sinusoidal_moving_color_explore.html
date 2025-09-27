@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated Sinusoidal Wave on Triangle Edges with Color Gradient</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    canvas {
+      border: 1px solid black;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    .frequency-value {
+      margin-left: 10px;
+    }
+    .dropdown {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="triangleCanvas" width="600" height="600"></canvas>
+
+  <!-- Controls -->
+  <div class="controls">
+    <span class="label">Frequency:</span>
+    <input type="range" id="frequencyControl" min="1" max="90" value="10">
+    <span id="frequencyValue" class="frequency-value">10</span>
+    
+    <div class="dropdown">
+      <label class="label">Color Gradient:</label>
+      <select id="colorGradientSelector">
+        <option value="blueToRed">Blue to Red</option>
+        <option value="greenToPurple">Green to Purple</option>
+        <option value="yellowToOrange">Yellow to Orange</option>
+      </select>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('triangleCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const L = 300; // Side length of the triangle
+    const A = 10;  // Amplitude of the wave
+    let B = 10;    // Frequency multiplier for the wave (initial value)
+    let phase = 0; // Initial phase for the animation
+
+    // Define color gradients
+    const gradients = {
+      blueToRed: ["#0000FF", "#3333FF", "#6666FF", "#9999FF", "#FF9999", "#FF6666", "#FF3333", "#FF0000"],
+      greenToPurple: ["#00FF00", "#33FF33", "#66FF66", "#99FF99", "#CC99FF", "#9966FF", "#6633FF", "#3300FF"],
+      yellowToOrange: ["#FFFF00", "#FFCC00", "#FF9900", "#FF6600", "#FF3300", "#FF0033", "#CC0033", "#990033"],
+    };
+    let selectedGradient = gradients.blueToRed;
+
+    // Triangle vertices
+    const V1 = { x: canvas.width / 2 - L / 2, y: canvas.height / 2 + Math.sqrt(3) * L / 6 };
+    const V2 = { x: canvas.width / 2 + L / 2, y: canvas.height / 2 + Math.sqrt(3) * L / 6 };
+    const V3 = { x: canvas.width / 2, y: canvas.height / 2 - Math.sqrt(3) * L / 3 };
+
+    // Function to draw the sinusoidal wave along each edge with a phase shift and gradient
+    function drawWaveEdge(vStart, vEnd, normal, amplitude, frequency, phaseShift) {
+      const steps = 100;
+      for (let i = 0; i < steps; i++) {
+        const t = i / steps;
+
+        // Linear interpolation along the edge
+        const x = (1 - t) * vStart.x + t * vEnd.x;
+        const y = (1 - t) * vStart.y + t * vEnd.y;
+
+        // Apply sinusoidal displacement along the normal with a phase shift
+        const offsetX = amplitude * Math.sin(frequency * t + phaseShift) * normal.x;
+        const offsetY = amplitude * Math.sin(frequency * t + phaseShift) * normal.y;
+
+        // Determine the color from the selected gradient
+        const colorIndex = Math.floor((i / steps) * selectedGradient.length);
+        ctx.fillStyle = selectedGradient[colorIndex];
+        
+        // Draw the point with the gradient color
+        ctx.fillRect(x + offsetX, y + offsetY, 2, 2);
+      }
+    }
+
+    // Function to draw the entire triangle with waves
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Calculate normals for each edge
+      const normal1 = { x: 0, y: -1 }; // Normal for edge V1 -> V2
+      const normal2 = { x: -Math.sqrt(3) / 2, y: 0.5 }; // Normal for edge V2 -> V3
+      const normal3 = { x: Math.sqrt(3) / 2, y: 0.5 };  // Normal for edge V3 -> V1
+
+      // Draw waves on each edge with the current phase shift and gradient
+      drawWaveEdge(V1, V2, normal1, A, B, phase);
+      drawWaveEdge(V2, V3, normal2, A, B, phase);
+      drawWaveEdge(V3, V1, normal3, A, B, phase);
+
+      // Draw the triangle outline
+      ctx.strokeStyle = 'black';
+      ctx.beginPath();
+      ctx.moveTo(V1.x, V1.y);
+      ctx.lineTo(V2.x, V2.y);
+      ctx.lineTo(V3.x, V3.y);
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    // Animation loop
+    function animate() {
+      phase += 0.1; // Increment phase for animation effect
+      draw();
+      requestAnimationFrame(animate); // Loop the animation
+    }
+
+    // Frequency control
+    const frequencyControl = document.getElementById('frequencyControl');
+    const frequencyValue = document.getElementById('frequencyValue');
+
+    // Event listener to update frequency and redraw on change
+    frequencyControl.addEventListener('input', (event) => {
+      B = parseInt(event.target.value, 10);
+      frequencyValue.textContent = B;
+      draw();
+    });
+
+    // Color gradient selector
+    const colorGradientSelector = document.getElementById('colorGradientSelector');
+    colorGradientSelector.addEventListener('change', (event) => {
+      selectedGradient = gradients[event.target.value];
+      draw();
+    });
+
+    // Start the animation
+    animate();
+  </script>
+</body>
+</html>
+

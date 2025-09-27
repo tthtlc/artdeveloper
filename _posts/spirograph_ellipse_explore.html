@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circle Rotating Around a Circle Contour with Trail</title>
+  <style>
+    #container {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      margin: auto;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border: 1px solid black;
+      display: block;
+    }
+    #controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+    #controls label {
+      margin: 10px 0;
+    }
+    .footer-link { 
+        position: absolute; 
+        bottom: 20px; 
+        text-align: center; 
+        width: 100%; 
+    } 
+    .footer-link a { 
+        font-size: 16px; 
+        color: #007bff; 
+        text-decoration: none; 
+    } 
+    .footer-link a:hover { 
+        text-decoration: underline; 
+    } 
+        .canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+         }
+         canvas {
+             border: 1px solid black;
+             background-color: #333;
+            margin-bottom: 20px;
+         }
+        #gitalk-container {
+            width: 600px;
+        }
+    </style>
+  <!-- Google tag (gtag.js) --> 
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GEX61LPT08"></script> 
+  <script>   
+    window.dataLayer = window.dataLayer || [];   
+    function gtag(){dataLayer.push(arguments);}   
+    gtag('js', new Date());   
+    gtag('config', 'G-GEX61LPT08'); 
+  </script> 
+</head>
+<body>
+  <div id="container">
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <canvas id="trailCanvas" width="500" height="500"></canvas>
+  </div>
+  
+  <div id="controls">
+    <label>
+      bigRadius: <input type="range" id="bigRadius1Slider" min="50" max="250" step="1" value="200">
+    </label>
+    <label>
+      bigRadius: <input type="range" id="bigRadius2Slider" min="50" max="250" step="1" value="50">
+    </label>
+    <label>
+      smallRadius: <input type="range" id="smallRadiusSlider" min="10" max="100" step="1" value="50">
+    </label>
+  </div>
+    <div class="canvas-container">
+    	<div id="gitalk-container"></div>
+    </div>
+
+  
+<script> 
+  document.addEventListener("contextmenu", function(event) { event.preventDefault(); });
+  
+  const canvas = document.getElementById('canvas');
+  const trailCanvas = document.getElementById('trailCanvas');
+  const ctx = canvas.getContext('2d');
+  const trailCtx = trailCanvas.getContext('2d');
+  
+  let bigRadius1 = parseInt(document.getElementById('bigRadius1Slider').value);
+  let bigRadius2 = parseInt(document.getElementById('bigRadius2Slider').value);
+  let smallRadius = parseInt(document.getElementById('smallRadiusSlider').value);
+  
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  
+  let angle = 0;
+  let lastPointX, lastPointY;
+
+  // Update values and clear trail on radius change
+  document.getElementById('bigRadius1Slider').addEventListener('input', function() {
+    bigRadius1 = parseInt(this.value);
+    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);  // Clear trail
+  });
+  document.getElementById('bigRadius2Slider').addEventListener('input', function() {
+    bigRadius2 = parseInt(this.value);
+    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);  // Clear trail
+  });
+  
+  document.getElementById('smallRadiusSlider').addEventListener('input', function() {
+    smallRadius = parseInt(this.value);
+    trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);  // Clear trail
+  });
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw the big circle
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, bigRadius1, bigRadius2, 0, 8 * Math.PI, true);
+    ctx.stroke();
+    
+    // Position of the small circle's center as it rotates inside the big circle
+    const smallCenterX = centerX + (bigRadius1 - smallRadius) * Math.cos(angle);
+    const smallCenterY = centerY + (bigRadius2 - smallRadius) * Math.sin(angle);
+    
+    // Draw the small circle
+    ctx.beginPath();
+    ctx.arc(smallCenterX, smallCenterY, smallRadius, 0, 2 * Math.PI);
+    ctx.stroke();
+    
+    // Draw the point on the small circle tracing the contour
+    const pointX = smallCenterX + smallRadius * Math.cos(-((bigRadius1 + bigRadius2)/2/smallRadius - 1) * angle);
+    const pointY = smallCenterY + smallRadius * Math.sin(-((bigRadius2 + bigRadius1)/2 / smallRadius - 1) * angle);
+    
+    ctx.beginPath();
+    ctx.arc(pointX, pointY, 3, 0, 2 * Math.PI);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+
+    // Draw trail on the trail canvas
+    if (lastPointX !== undefined && lastPointY !== undefined) {
+      trailCtx.beginPath();
+      trailCtx.moveTo(lastPointX, lastPointY);
+      trailCtx.lineTo(pointX, pointY);
+      trailCtx.strokeStyle = 'red';
+      trailCtx.lineWidth = 1;
+      trailCtx.stroke();
+    }
+
+    // Update last coordinates for trail drawing
+    lastPointX = pointX;
+    lastPointY = pointY;
+
+    // Update the angle for the next frame
+    angle += 2 * Math.PI / 240;
+    
+    requestAnimationFrame(draw);
+  }
+  
+  draw();
+</script>
+
+<!-- Gitalk link  -->
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script>
+<!-- Include md5 library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.10.0/js/md5.min.js"></script>
+
+<div id="gitalk-container"></div>
+    <script type="text/javascript">
+    var gitalk = new Gitalk({
+    clientID: 'Ov23lixOB0KjXtg08eAj',
+    clientSecret: 'a3a33cad9733049a39849d54e99e69f70f69d1c1',
+    repo: 'tthtlc.github.io',
+    owner: 'tthtlc',
+    admin: ['tthtlc'],
+    distractionFreeMode: true,
+    id: md5(location.pathname),
+    });
+    gitalk.render('gitalk-container');
+</script>
+
+<!-- Gitalk end -->
+</body>
+</html>
+

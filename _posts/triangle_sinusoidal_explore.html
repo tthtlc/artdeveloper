@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sinusoidal Wave on Triangle Edges</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    canvas {
+      border: 1px solid black;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .label {
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    .frequency-value {
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="triangleCanvas" width="600" height="600"></canvas>
+
+  <!-- Frequency Control -->
+  <div class="controls">
+    <span class="label">Frequency:</span>
+    <input type="range" id="frequencyControl" min="1" max="30" value="10">
+    <span id="frequencyValue" class="frequency-value">10</span>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('triangleCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const L = 300; // Side length of the triangle
+    const A = 10;  // Amplitude of the wave
+    let B = 10;    // Frequency multiplier for the wave (initial value)
+
+    // Triangle vertices
+    const V1 = { x: canvas.width / 2 - L / 2, y: canvas.height / 2 + Math.sqrt(3) * L / 6 };
+    const V2 = { x: canvas.width / 2 + L / 2, y: canvas.height / 2 + Math.sqrt(3) * L / 6 };
+    const V3 = { x: canvas.width / 2, y: canvas.height / 2 - Math.sqrt(3) * L / 3 };
+
+    // Function to draw the sinusoidal wave along each edge
+    function drawWaveEdge(vStart, vEnd, normal, amplitude, frequency) {
+      const steps = 100;
+      for (let i = 0; i < steps; i++) {
+        const t = i / steps;
+
+        // Linear interpolation along the edge
+        const x = (1 - t) * vStart.x + t * vEnd.x;
+        const y = (1 - t) * vStart.y + t * vEnd.y;
+
+        // Apply sinusoidal displacement along the normal
+        const offsetX = amplitude * Math.sin(frequency * t) * normal.x;
+        const offsetY = amplitude * Math.sin(frequency * t) * normal.y;
+
+        // Draw the point
+        ctx.fillStyle = 'blue';
+        ctx.fillRect(x + offsetX, y + offsetY, 2, 2);
+      }
+    }
+
+    // Function to draw the entire triangle with waves
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Calculate normals for each edge
+      const normal1 = { x: 0, y: -1 }; // Normal for edge V1 -> V2
+      const normal2 = { x: -Math.sqrt(3) / 2, y: 0.5 }; // Normal for edge V2 -> V3
+      const normal3 = { x: Math.sqrt(3) / 2, y: 0.5 };  // Normal for edge V3 -> V1
+
+      // Draw waves on each edge
+      drawWaveEdge(V1, V2, normal1, A, B);
+      drawWaveEdge(V2, V3, normal2, A, B);
+      drawWaveEdge(V3, V1, normal3, A, B);
+
+      // Draw the triangle outline
+      ctx.strokeStyle = 'black';
+      ctx.beginPath();
+      ctx.moveTo(V1.x, V1.y);
+      ctx.lineTo(V2.x, V2.y);
+      ctx.lineTo(V3.x, V3.y);
+      ctx.closePath();
+      ctx.stroke();
+    }
+
+    // Initial draw
+    draw();
+
+    // Frequency control
+    const frequencyControl = document.getElementById('frequencyControl');
+    const frequencyValue = document.getElementById('frequencyValue');
+
+    // Event listener to update frequency and redraw on change
+    frequencyControl.addEventListener('input', (event) => {
+      B = parseInt(event.target.value, 10);
+      frequencyValue.textContent = B;
+      draw();
+    });
+  </script>
+</body>
+</html>
+
