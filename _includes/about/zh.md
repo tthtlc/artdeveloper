@@ -1,61 +1,75 @@
-Hey，我是黄玄（a.k.a. Hux, _@huxpro_），一个略懂计算机科学与艺术的斜杆不动青年，自诩是一个[广院](https://baike.baidu.com/item/%E4%B8%AD%E5%9B%BD%E4%BC%A0%E5%AA%92%E5%A4%A7%E5%AD%A6)数字媒体艺术系与 RIT 计算机科学系（师从 [Prof. Matthew Fluet](https://www.cs.rit.edu/~mtf/) 专攻编程语言）杂交出来的[黑客与画家](https://book.douban.com/subject/6021440/)。
+# [Peter Teoh]
 
-现为 <del>Facebook</del> Meta 签约软件工程师，就职于开源技术<del>网红</del>团队 [React](https://beta.reactjs.org/community/meet-the-team#react-core)，曾参与 [Hermes JavaScript 引擎](https://hermesengine.dev/)，[ReasonML](https://reasonml.github.io/) (现 [ReScript](https://rescript-lang.org/))，以及 [Reality Labs](https://tech.fb.com/ar-vr/) 某保密项目等。在国内期间，曾被招募为阿里巴巴 · [阿里旅行（飞猪）](http://alitrip.com)· 前端工程师、微影时代 · 微票儿 · 前端基础设施工程团队负责人、[饿了么](https://ele.me/) · 大前端团队 · [PWA 顾问](https://medium.com/elemefe/upgrading-ele-me-to-progressive-web-app-2a446832e509) 等。
+**网络安全研究员 | 漏洞赏金猎人 | 系统与容器专家**
 
+---
 
-目前的物理活动范围主要在美帝纽约与硅谷，也想当个数字游<del>民</del>侠。虚拟分身日常出没于[微博](https://weibo.com/huxpro)、[知乎](https://www.zhihu.com/people/huxpro/pins/posts)、[B站](https://space.bilibili.com/43271611)、[Instagram](https://www.instagram.com/huxpro/)、[推特](https://twitter.com/Huxpro/)、[Github](https://github.com/huxpro) 等。
+## 🔍 关于我
 
+我是一名网络安全研究员，在以下领域拥有深厚的专业知识：
 
-##### 技术演讲
+- Web 应用安全和漏洞赏金猎人
+- 开源安全/漏洞发现
+- 二进制分析和逆向工程
+- Linux 操作系统内部、容器化和虚拟化
+- 嵌入式/路由器固件和网络
 
-- [我的大前端世界观][20] · [FEDAY](https://fequan.com/2023/) · 2023
-- [前端已死，前端永生][21] · [掘金年度技术演讲](https://juejin.cn/meetings/talk2023) · 2023
-- [React 国情咨文 2022][13] · 第七届中国开源年会 · 2023
-- [React Labs: What We've Been Working On – June 2022][12] · React Blog
-- [React Without Memo][11] · [React Conf 2021](https://conf.reactjs.org/)
-- [Toward Hermes being the Default][11] · React Native Blog · 2021
-- React Native 0.64 with Hermes for iOS · [The RN Show Podcast Ep #5](https://www.callstack.com/podcast-react-native-show) · 2021
-- [Upgrading to Progressive Web Apps][9] · [Youtube](https://www.youtube.com/watch?v=RWzMF-1fjJ8&t=1s) · [JSConf CN 上海 2017](http://2017.jsconf.cn/)
-- Building Progressive Web Apps · [CSDI 广州 2017](http://www.csdisummit.com/)
-- The State of Progressive Web App · GDG IO Redux 北京 2017
-- 炒冷饭 · PWA 到底是个什么玩意？· Baidu HQ 北京 2017
-- [Service Worker 101][5] · GDG DevFest 北京 2016
-- [Progressive Web App，复兴序章][4] · [QCon 上海 2016](http://2016.qconshanghai.com/presentation/3111)
-- Progressive Web App 之我见 · GDG IO Redux 北京 2016
-- [CSS Still Sucks 2015][2] · 2015
-- [JavaScript 模块化七日谈][1] · 2015
+我的方法将攻击性思维与深厚的系统知识相结合：当我测试 Web 应用时，我经常将漏洞追溯到底层组件、依赖项或运行时行为。
 
+---
 
-##### 媒体关注
+## 🛠 技术领域和工具
 
-- [Hux 黄玄：从全局视角看 React 生态][14] · 直播 · 图灵 8 点半 · 2023
-- [2022 中国开源先锋 33 人][18] · SegmentFault · 2023
-- [React 黄玄：不懂艺术的 B-Boy 不是 Swag 的程序员][16] · Gitee 封面人物 · 2022
-- [在硅谷当程序员是怎样的体验？][17] · 知乎[《我所向往的职业啊》](https://movie.douban.com/subject/36015036/) · 2022
+| 领域 | 重点关注/工具 |
+|---|---|
+| Web 应用安全和漏洞赏金猎人 | OWASP 漏洞（XSS、SSRF、RCE 等）、Burp Suite、ZAP、自定义模糊测试器 |
+| 二进制/逆向工程 | IDA Pro、Ghidra、radare2、自定义补丁和漏洞利用开发 |
+| 操作系统和内核 | Linux 内部机制、内存管理、系统调用挂钩 |
+| 容器和虚拟化 | Docker、LXC、KVM、libvirt、安全隔离（命名空间、cgroups）|
+| 网络和嵌入式 | 固件分析、WiFi/路由器平台、自定义数据包工具 |
 
-<!--
-- [掘金 AMA：我是前端娱乐圈的老人 & Facebook 实习生 -- 黄玄][19] · 2018
--->
+---
 
+## 🌐 精选贡献和项目
 
-[1]: //huangxuan.me/2015/07/09/js-module-7day/
-[2]: //huangxuan.me/2015/12/28/css-sucks-2015/
-[3]: //huangxuan.me/2016/06/05/pwa-in-my-pov/
-[4]: //huangxuan.me/2016/10/20/pwa-qcon2016/
-[5]: //huangxuan.me/2016/11/20/sw-101-gdgdf/
-[6]: https://yanshuo.io/assets/player/?deck=58ac8598b123db0067292f92 "PWA Rehashing"
-[7]: https://yanshuo.io/assets/player/?deck=593ad6fbfe88c2006a0a0d6d "The State of PWA"
-[8]: https://yanshuo.io/assets/player/?deck=594d673d570c357d0698a950 "Building PWA"
-[9]: //huangxuan.me/jsconfcn2017/
-[10]: https://reactnative.dev/blog/2021/10/26/toward-hermes-being-the-default
-[11]: https://youtu.be/lGEMwh32soc
-[12]: https://reactjs.org/blog/2022/06/15/react-labs-what-we-have-been-working-on-june-2022.html
-[13]: https://www.bilibili.com/video/BV1LY411Q7hC/?spm_id_from=333.999.0.0
-[14]: https://appycyfaqcq1951.pc.xiaoe-tech.com/p/t_pc/course_pc_detail/video/v_64477dbfe4b0cf39e6c11d2a
-[15]: https://segmentfault.com/a/1190000043208486
-[16]: https://gitee.com/gitee-stars/30
-[17]: https://www.zhihu.com/zvideo/1542577108190068737?page=ogv
-[18]: https://segmentfault.com/a/1190000043208486
-[19]: https://juejin.cn/post/6844903750155419655
-[20]: https://www.bilibili.com/video/BV1SC4y1c7ju/
-[21]: https://www.bilibili.com/video/BV1uz421d7Ch/
+以下是一些代表性领域（您可以将其与您的实际项目/文章互换）：
+
+- **漏洞赏金报告和公开文章**
+我为社区的公开漏洞赏金文章和经验教训做出了贡献（例如，研究人员的文章如何塑造攻击者的思维模式）。
+（参见示例：*“漏洞赏金：反馈、策略与炼金术”*——赏金社区的普遍反思）：contentReference[oaicite:0]{index=0}
+
+- **学术与系统安全研究**
+我关注安全研究，有时也会参与其中，例如浏览器安全系统化（例如 *SOK：关于 Web 浏览器安全性的分析*）：contentReference[oaicite:1]{index=1}
+或将攻击检测嵌入 Web 应用（例如 *BlackWatch*）：contentReference[oaicite:2]{index=2}。
+
+- **开源与社区工作**
+我参与或审核开源项目，有时还会参与开源软件维护者的漏洞赏金计划。最近有学术分析探讨了维护者如何在开源环境中审查和解决漏洞赏金报告。 :contentReference[oaicite:3]{index=3}
+
+- **容器/虚拟化强化实验**
+（您可以在此处插入您自己项目的链接或描述，例如安全容器逃逸证明、内核模块沙盒等）
+
+- **路由器/固件/网络黑客攻击**
+（您还可以添加您撰写的公开审计报告、披露或文章的链接。）
+
+---
+
+## 🎓 教育背景与认证
+
+- 无需填写
+
+---
+
+## 🏆 成就与影响
+
+您可以添加以下指标/亮点：
+
+- 无需填写
+
+---
+
+## 📫 联系我们
+
+- https://github.com/tthtlc
+- https://tthtlc.wordpress.com
+
+---
