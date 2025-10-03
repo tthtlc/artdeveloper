@@ -1,10 +1,11 @@
 ---
+layout: post
 title: "Psychedelic Art Generator"
 tags:
-  - digital arts, mathematical art, Javascript
+  - graphics, graphics, digital arts, mathematical art, Javascript
 ---
 
-  <style>
+<style>
     body {
       margin: 0;
       overflow: hidden;
@@ -13,9 +14,8 @@ tags:
     canvas {
       display: block;
     }
-  </style>
+</style>
 <canvas id="canvas"></canvas>
-
 <script>
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
