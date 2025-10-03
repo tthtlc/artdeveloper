@@ -30,29 +30,6 @@ My approach combines offensive mindset with deep systems knowledge: when I test 
 
 ---
 
-## 🌐 Selected Contributions & Projects
-
-Below are some representative areas (you can swap with your actual projects / write-ups):
-
-- **Bug bounty reports & public write-ups**
-  I have contributed to public bug bounty write-ups and lessons in the community (e.g. how researcher write-ups frame the attacker mindset).
-  (See example: *“Bug bounty: feedback, strategy and alchemy”* — general reflections in the bounty community) :contentReference[oaicite:0]{index=0}
-
-- **Academic & system security research**
-  I follow and sometimes contribute to security research such as browser security systematization (e.g. *SOK: On the Analysis of Web Browser Security*) :contentReference[oaicite:1]{index=1}
-  or methods like embedding attack detection into web apps (e.g. *BlackWatch*) :contentReference[oaicite:2]{index=2}.
-
-- **Open-source & community work**
-  I engage in or audit open-source projects, sometimes participating in bug bounty programs for OSS maintainers. There is recent academic analysis of how maintainers review and resolve bug bounty reports in open source settings. :contentReference[oaicite:3]{index=3}
-
-- **Container / virtualization hardening experiments**
-  (You would insert links or descriptions of your own projects here, e.g. secure container escape proofs, kernel module sandboxing, etc.)
-
-- **Router / firmware / network hacks**
-  (You would also include links to public audit reports, disclosures, or write-ups you have authored.)
-
----
-
 ## 🎓 Education & Certifications
 
 - Nothing
