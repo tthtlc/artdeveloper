@@ -6,29 +6,14 @@ tags:
 ---
 
 <style>
-/* Hide Jekyll layout elements for fullscreen effect */
-.navbar, .intro-header, .post-container, .sidebar-container, footer {
-  display: none !important;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  background: #160036;
-  overflow: hidden;
-  min-height: 100vh;
-}
-
+/* Make the canvas take up available space without hiding content */
 canvas {
   display: block;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 80vh;
   cursor: crosshair;
   background: radial-gradient(circle at 50% 50%, #3e006e 0%, #0a0020 100%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
+  margin: 20px 0;
 }
 </style>
 
@@ -40,8 +25,9 @@ const ctx = canvas.getContext('2d');
 let width, height, dpr = window.devicePixelRatio || 1;
 
 function resize() {
-  width = window.innerWidth;
-  height = window.innerHeight;
+  const rect = canvas.getBoundingClientRect();
+  width = rect.width;
+  height = rect.height;
   canvas.width = width * dpr;
   canvas.height = height * dpr;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
