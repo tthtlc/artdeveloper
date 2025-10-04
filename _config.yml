@@ -55,7 +55,7 @@ kramdown:
       start_line: 1
 
 # Disqus settings
-disqus_username: xda-f262b4aa637891e72c8cbebced8d3000
+# disqus_username: xda-f262b4aa637891e72c8cbebced8d3000
 
 # Netease settings
 netease_comment: false
