@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Dynamic Petals with Red-Blue-Yellow Gradient
-
 <canvas id="simple_petal" width="600" height="600"></canvas>
 <script>
     function getRandomInt(min, max) {

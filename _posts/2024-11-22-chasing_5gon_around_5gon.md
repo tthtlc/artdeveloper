@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Drawing chasing diagram on pentagon around pentagon.
-
 <canvas id="pentagonCanvas" width="600" height="600"></canvas>
 <script> 
         const canvas = document.getElementById('pentagonCanvas');

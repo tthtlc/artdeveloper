@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Drawing chasing and rotating square.
-
 <canvas id="pentagonCanvas" width="500" height="500"></canvas>
 <script> 
 

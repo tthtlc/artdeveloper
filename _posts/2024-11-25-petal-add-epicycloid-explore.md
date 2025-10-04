@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Epicycloid Curves with Petal with Scrollbars, Labels, and Color Picker
-
 <style>
         .canvas-container {
             display: flex;

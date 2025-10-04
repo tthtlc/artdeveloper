@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-AI generated javascript for prametric equation visualization.
-
 <a href="https://tthtlc.wordpress.com/2024/10/18/sinusoidal-parajetric-equalition/"> Sinusoidal Parametric Equation </a> <br>
 
 <style>

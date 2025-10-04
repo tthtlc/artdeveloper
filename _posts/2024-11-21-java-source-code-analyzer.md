@@ -6,8 +6,6 @@ tags:
   - AI
 ---
 
-Java source vulnerability analyzer.
-
 <style>
     .external-link-button {
         display: inline-flex;

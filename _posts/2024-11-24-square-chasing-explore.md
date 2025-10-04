@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Square with Colored Lines
-
 <style>
         canvas {
             background-color: white;

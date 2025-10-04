@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Hypotrochoid Curve with Additional Scrollbars
-
 <style>
     canvas {
         display: block;

@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Chasing lines and special effects of running color.
-
 <canvas id="canvas" width="800" height="600"></canvas>
 <script>
         function draw3DHexagon() {

@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Drawing squares around squares, while having chasing diagram inside each square.
-
 <canvas id="pentagonCanvas" width="600" height="600"></canvas>
 <script> 
         const canvas = document.getElementById('pentagonCanvas');

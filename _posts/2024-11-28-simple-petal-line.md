@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Dynamic Petals
-
 <style>
         canvas {
             background-color: white;

@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Animated Sinusoidal Wave on Ellipse 
-
 Amplitude * sin(B * theta) * sin (A * theta)
 
 <style>

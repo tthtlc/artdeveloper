@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Vortex Parametric Equation Visualization
-
 <style>
         .url-container {
             position: absolute;

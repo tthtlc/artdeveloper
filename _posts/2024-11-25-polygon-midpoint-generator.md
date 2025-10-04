@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Polygon Midpoint Generator
-
 <style>
         canvas {
             display: block;

@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Cardioid Shape
-
 <style>
         canvas {
             background-color: white;

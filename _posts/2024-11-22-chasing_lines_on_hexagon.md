@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Chasing lines on rotating hexagon.
-
 <canvas id="canvas" width="800" height="600"></canvas>
 <script>
         function drawRotating3DHexagon() {

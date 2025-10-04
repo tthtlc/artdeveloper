@@ -5,9 +5,6 @@ tags:
   - graphics
 ---
 
-Variable Petal Lines Animation
-
-
 <style>
         .controls {
             margin: 10px 0;

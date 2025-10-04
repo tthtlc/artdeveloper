@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Hypotrochoid Curves with Scrollbars, Labels, and Color Picker
-
 <style>
         canvas {
             border: 1px solid black;

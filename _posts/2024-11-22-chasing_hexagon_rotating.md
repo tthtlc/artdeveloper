@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Chasing diagram on rotating hexagon.
-
 <canvas id="pentagonCanvas" width="500" height="500"></canvas>
 <script> 
 const canvas = document.getElementById('pentagonCanvas');

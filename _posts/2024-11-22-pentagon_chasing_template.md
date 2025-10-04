@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-How to draw pentagon with colored lines.   This method of drawing lines is called chasing diagram.   The two adjacent edge of the pentagon are specified.
-
 <style>
         canvas {
             background-color: white;

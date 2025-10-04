@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Polygon with Colored Lines
-
 <style>
         canvas {
             background-color: white;

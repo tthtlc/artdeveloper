@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Chasing rotating triangle.
-
 <canvas id="pentagonCanvas" width="500" height="500"></canvas>
 <script> 
 

@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Generalized chasing rotating polygon.
-
 This is a generalization of this:
 
 [chasing_triangle_rotating.html](/graphics/2024/11/22/chasing_triangle_rotating.html)

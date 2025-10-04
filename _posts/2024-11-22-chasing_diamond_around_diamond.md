@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Chasing diagram on diamond around a diamond.
-
 <canvas id="pentagonCanvas" width="600" height="600"></canvas>
     
 <script> 

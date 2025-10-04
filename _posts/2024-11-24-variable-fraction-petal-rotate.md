@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Variable Petal Lines Animation
-
 <style>
         canvas {
             background-color: white;

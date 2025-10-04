@@ -5,8 +5,6 @@ tags:
   - graphics
 ---
 
-Chasing diagram on hexagon around hexagon animated with color shifting.
-
 <canvas id="hexagonCanvas" width="600" height="600"></canvas>
 <script> 
         const canvas = document.getElementById('hexagonCanvas');
