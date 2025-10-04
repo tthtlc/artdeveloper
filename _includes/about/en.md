@@ -1,6 +1,8 @@
-# [Peter Teoh]
+# Peter Teoh
 
-**Cybersecurity Researcher | Bug Bounty Hunter | Systems & Container Specialist**
+- Cybersecurity Researcher 
+- Bug Bounty Hunter 
+- Systems & Container Specialist**
 
 ---
 
